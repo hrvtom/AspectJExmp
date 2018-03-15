@@ -3,10 +3,10 @@ public aspect MannersAspect {
     pointcut callSayMessage() : call(public static void HelloWorld.say*(..));
     
     before() : callSayMessage() {
-	System.out.println("Good day!");
+	System.out.println("Aspect before "+thisJoinPoint+" : Good day!");
     }
 
     after() : callSayMessage() {
-	System.out.println("Thank you!");
+	System.out.println("Aspect after "+thisJoinPoint+" : Thank you!");
     }
 }

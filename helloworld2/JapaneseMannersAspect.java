@@ -6,6 +6,7 @@ public aspect JapaneseMannersAspect {
 
     void around(String person) 
 	: callSayMessageToPerson(person) {
+		System.out.println("Aspect around:");
 	proceed(person + "-san");
     }
 }
