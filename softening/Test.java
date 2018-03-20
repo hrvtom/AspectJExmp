@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.rmi.RemoteException;
 
 public class Test {
     public static void main(String[] args) {
@@ -8,7 +9,7 @@ public class Test {
 	System.out.println("Current date is: " + currentDate);
     }
 
-    private static aspect SoftenDateFetcherRemoteException {
+	public static aspect SoftenAspect {
 	declare soft : 
 	    RemoteException : (call(public * DateFetcher.*(..))
 			       || call(public DateFetcherImpl.new(..)))
