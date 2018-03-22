@@ -39,6 +39,3 @@ Compiling and running examples
    the only additional file in helloworld2 directory.
    
    
->>>>>
-creditcard - primjer aspecta koji handla normalni return, exceptions u return, kao i primjer kako dooci 
-do parametara metode (context) pomocu joinpointa, vise advice oko iste method problem
