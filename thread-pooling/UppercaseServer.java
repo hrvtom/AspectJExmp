@@ -23,7 +23,7 @@ public class UppercaseServer{
 		private Socket _requestSocket;
 		
 		public UppercaseWorker(Socket requestSocket) throws IOException{
-			System.out.println("creaing new UppercasewWorker");
+			System.out.println("UppercaseServer: Creating new UppercasewWorker by UppercaseServer");
 			_requestSocket = requestSocket;
 		}
 		
@@ -42,7 +42,7 @@ public class UppercaseServer{
 					responseWriter.flush();
 				}
 			}catch (IOException e){
-				System.out.println("Shit happens "+ e);
+				System.out.println("UppercaseServer: Shit happens "+ e);
 			}finally{
 				try{
 				if(requestReader != null)
@@ -51,10 +51,10 @@ public class UppercaseServer{
 					responseWriter.close();
 				_requestSocket.close();
 				}catch (IOException e){
-					System.out.println("Problem releasing resources " + e);
+					System.out.println("UppercaseServer: Problem releasing resources " + e);
 				}
 			}
-			System.out.println("Ending the session");
+			System.out.println("UppercaseServer: Ending the session");
 		}
 	}
 	
