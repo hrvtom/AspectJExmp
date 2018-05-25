@@ -1,0 +1,120 @@
+https://www.javaworld.com/article/2073918/core-java/i-want-my-aop---part-1.html
+
+Since most systems incluse crosscutting concerns, it's no suprise that a few
+techniques have emerged to modularize their implementation. Such techniques 
+include mix-in classes, design patterns, and domain-specific solutions.
+
+With mix-in classes you can differ a concerns final implementation. 
+The primary class contains a mix-in class instance and allowes the systems 
+other parts to set the instance.
+In credit card example, the class implementing business logic composes a logger.
+Another part of the system could set this logger to get the appropriate
+logging type. The logger could be set to log using a filesystem or messaging
+middleware. Although the nature of logging is now deffered, the composer
+nevertheless contains the code to invoke logging operations at all log
+points and controls the logging information.
+
+Behavioral design patterns, like Visitior and Template Method, let you defer
+implementation. However, just in case with mix-ins, the control of the 
+operation -- invoking visiting logic or invoking template methods -- stays 
+within the main classes.
+
+Domain specific solutions, such as frameworks and application servers, let
+developers address some crosscutting concerns in a modularized way. The
+EJB architecute addresses crossuctting concernes such as security, administration
+performance, and container-managed persistence. Bean developers focus on the business
+logic, while the deployment developers focus on depleyment issues,such as gean-data
+mapping to a database.
+
+AOP lets you implement individual concerns in a loosly coupled fashion,
+and combine these implementations to form the final system.
+AOP differs most from OOP in the way it addresses crosscutting concerns. With
+AOP, each concern's implementation remains unaware that other concerns are
+"aspecting" it. Example, credit card processign module doesn't know that the other
+concerns are logging or authenticating its operations.
+
+At high level, an AOP language specifies two componenets:
+        - Implementation of concerns, mapping of individual requirement into code
+          so that compiler can translate it into executable code.
+        - Weaving rules specification, how to compose independently implemented concerns
+          to form the final system.
+
+In addtion, AspectJ also allows the aspecting of other aspects and classes in several ways.
+The each concern's implementation is oblivious to the fact that it is being aspected by other
+concerns.
+You can introduce new data members and new methods, as well as declare a class to implement
+additional base classes and interfaces.
+
+Join points - define specific points in a program's execution. Joinpoints could define calls to
+specific methods in a class. Candidate joinpoints include calls to a method, a conditional check,
+a loop's beginning, or an assignment. Joinpoints also have a context associated with them.
+A method-call joinpoint could have the target object and its argument as part of the context.
+Pontcut - is the language construct that specifies Join point or specify joinpoint collection.
+It collects specific context atthose points, it let you expose context at the joinpoint to an
+advice implementation.
+Advice - defines pieces of an aspect implementation to be executed at pointcuts.
+Aspect - combines these primitives.
+
+>>>>>
+Named pointcuts explicitly specify their names.You can reuse such pointcuts for defining other pointcuts,
+defining part of an advice, overriding a pointcut ...
+Annonymous pointcuts become defined at the point of their usage, in advice specification or as a part of
+some other pointcut's definition, and cannot be reused.
+
+>>>>>
+Advice implementations often require access to data at the joinpoint. For example, to log certain operations,
+an advice might need information, called context, about a method and arguments to it.
+Pointcuts, therefore, allow exposure of the context at the execution point to pass to an advice implementation.
+AspectJ offers target(), this(), and args() pointcuts to collect the context.
+
+>>>>>
+Advices specify the executable code when reaching certain pointcuts. AspectJ provides three ways to associate an advice with a joinpoint:
+before, after, and around a joinpoint's execution.
+A before advice runs just before the joinpoint, whereas an after advice runs just after.
+With an after advice, you can specify after normal return, after throwing an exception, or after returning either way from a joinpoint.
+An around advice surrounds a joinpoint and has control if the joinpoint's execution should proceed. It can also decide to proceed with
+a different argument set.
+
+>>>>>
+Aspects resemble clasess: an aspect can contain methods and fields, extend other classes or aspects and implement
+interfaces. Aspects differ from classes in that you cannot create an objext from an aspect using new().
+
+AspectJ allows classes to declare pointcuts. You must declare "static" pointcuts declared inside a class.
+However, AspectJ doesnt allow classes to contain advices; only aspects can contain advices.
+
+>>>>>
+AspectJ lets you introduce methods or fields to classes and interfaces.
+Interestingly, AspectJ lets you introduce method implementations and fields into interfaces.
+You can, for example, provide a default implementation of a few methods in an interface.
+aspect IntroduceMethodIllustration {
+        private void MyClass.foo() { 
+                System.out.println("This is foo");
+        }
+        private static int MyClass.instanceCount = 0;
+}
+
+With AspectJ, you can modify an existing class's inheritance hierarchy. Using these constructs, you can declare
+super classes and interfaces of an existing class or interface.
+aspect MakeMyClassSerializable {
+        declare parents : MyClass implements Serializable;
+}
+
+AspectJ can soften a checked exception into an unchecked exception for a particular method set. Such methods then behave
+as if they've thrown an unchecked exception of type org.aspectj.lang.SoftException, which wraps the original exception.
+aspect SoftenDateFetcherRemoteException {
+        declare soft : 
+            RemoteException : (call(public * DateFetcher.*(..))
+                               || call(public DateFetcherImpl.new(..)))
+                              && within(Test);
+}
+
+Other AspectJ features:
+        - You can declare one aspect as dominant over others to control precedence when multiple aspects
+          affect a certain pointcut.
+        - By default, Aspect J associates aspects with other classes and aspects, and therefore all aspectee
+          instances share the aspect's state. Beyond the default association type, AspectJ offers additional
+          types: perthis, pertarget, percflow, and percflowbelow. Each associates a separate aspect instance
+          with a self object, target object, control flow, and control flow excluding the pointcut, respectively.
+        - You can mark an aspect privileged, which gives it access to the private members of aspected classes.
+
+
