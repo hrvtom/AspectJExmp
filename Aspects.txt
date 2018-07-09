@@ -68,6 +68,10 @@ Pointcuts, therefore, allow exposure of the context at the execution point to pa
 AspectJ offers target(), this(), and args() pointcuts to collect the context.
 
 >>>>>
+AspectJ supports a limited form of reflection.Each advice body has access to sa special object, thisJoinPoint,
+which contains the information about the joinpoint.
+
+>>>>>
 Advices specify the executable code when reaching certain pointcuts. AspectJ provides three ways to associate an advice with a joinpoint:
 before, after, and around a joinpoint's execution.
 A before advice runs just before the joinpoint, whereas an after advice runs just after.
@@ -76,11 +80,16 @@ An around advice surrounds a joinpoint and has control if the joinpoint's execut
 a different argument set.
 
 >>>>>
+Aspect puts together pointcuts and advices.
 Aspects resemble clasess: an aspect can contain methods and fields, extend other classes or aspects and implement
 interfaces. Aspects differ from classes in that you cannot create an objext from an aspect using new().
 
 AspectJ allows classes to declare pointcuts. You must declare "static" pointcuts declared inside a class.
-However, AspectJ doesnt allow classes to contain advices; only aspects can contain advices.
+However, AspectJ doesn't allow classes to contain advices; only aspects can contain advices.
+
+An aspect can mark itself and any pointcut as abstract. Abstract pointcuts act similary to a class's abstract methods,
+they let you defer the details to the derived aspects. A concrete aspct axtending an abstract aspect can then provide 
+concrete definitions of abstract pointcuts
 
 >>>>>
 AspectJ lets you introduce methods or fields to classes and interfaces.

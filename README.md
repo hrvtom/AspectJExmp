@@ -11,3 +11,5 @@ do parametara metode (context) pomocu joinpointa, vise advice oko iste method pr
 softening - primjer softeninga, odnosno softening(promjena) checked exception-a u unchecked exception pomocu aspecta
 
 swing-thread - primjer aspect-a na GUI sucelju
+
+thread-pooling - primjer kako s aspectom napraviti thread pooling

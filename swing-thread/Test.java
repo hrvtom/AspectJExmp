@@ -32,22 +32,22 @@ public class Test extends JFrame {
 	}
 	
     private static class ValueSetter implements Runnable {
-	TableModel _model;
-	Object _value;
-	int _row;
-	int _column;
+		TableModel _model;
+		Object _value;
+		int _row;
+		int _column;
 
-	public ValueSetter(TableModel model, 
-			   Object value, int row, int column) {
-	    _model = model;
-	    _value = value;
-	    _row = row;
-	    _column = column;
-	}
+		public ValueSetter(TableModel model, 
+				   Object value, int row, int column) {
+			_model = model;
+			_value = value;
+			_row = row;
+			_column = column;
+		}
 
-	public void run() {
-	    _model.setValueAt(_value, _row, _column);
-	}
+		public void run() {
+			_model.setValueAt(_value, _row, _column);
+		}
 	
     }
 }

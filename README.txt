@@ -32,6 +32,11 @@ Compiling and running examples
 
    rmic DateFetcherImpl
 
+   Note, compiling example in "access-control" directory will
+   result in an compile time error. This is the correct behavior illustrating
+   how aspectj can be used for compile-time crosscutting behavior modification.
+   See the article for more details.
+
 2. Run examples by invoking the main class in each directory. Note, not
    all examples have a main class. You can run test by invoking:
 
@@ -41,4 +46,21 @@ Compiling and running examples
    and helloworld2 directory are identical. JapaneseMannersAspect.java is
    the only additional file in helloworld2 directory.
    
+3. For "thread-pooling" example, start two or more command shell. In one
+   command shell, start the server by issuing:
+
+   java UppercaseServer <port-number>
+
+   For example,
+   java UppercaseServer	10000
+
+   In other command shells, start clients by issuing
+
+   java UppercaseClient <servername> <port-number>
+
+   For example,
+   java UppercaseClient localhost 10000
+
+   To test pooling aspect, kill a client (by typing ^C), start a new 
+   one, and observe messages printed in command shell running the server.
    
