@@ -8,31 +8,31 @@ public aspect TableModelListenerWeakening extends EventListenerWeakening {
 	: target(AbstractTableModel) && args(TableModelListener);
 
     public EventListener getWeakListener(EventListener listener) {
-	System.out.println("Weakening " + listener);
-	return new WeakTableModelListener((TableModelListener)listener);
+		System.out.println(">TableModelListenerWeakening: Weakening listener " + listener);
+		return new WeakTableModelListener((TableModelListener)listener);
     }
 }
 
-public class WeakTableModelListener extends WeakEventListener 
-    implements TableModelListener {
+// public class WeakTableModelListener extends WeakEventListener 
+    // implements TableModelListener {
 
-    public WeakTableModelListener(TableModelListener delegatee) {
-	super(delegatee);
-    }
+    // public WeakTableModelListener(TableModelListener delegatee) {
+	// super(delegatee);
+    // }
     
-    public void tableChanged(TableModelEvent e) {
-	TableModelListener listener = (TableModelListener)getDelegatee();
-	listener.tableChanged(e);
-    }
+    // public void tableChanged(TableModelEvent e) {
+	// TableModelListener listener = (TableModelListener)getDelegatee();
+	// listener.tableChanged(e);
+    // }
     
-    static aspect TableRemoveGarbageCollectedListeners 
-	extends WeakEventListener.RemoveGarbageCollectedListeners {
+    // static aspect TableRemoveGarbageCollectedListeners 
+	// extends WeakEventListener.RemoveGarbageCollectedListeners {
 	
-	pointcut lexicalScopeMatch() : within(WeakTableModelListener);
+	// pointcut lexicalScopeMatch() : within(WeakTableModelListener);
 
-	public void removeListener(EventObject event, EventListener listener) {
-	    ((TableModel)event.getSource())
-		.removeTableModelListener((TableModelListener)listener);
-	}
-    }
-}
+	// public void removeListener(EventObject event, EventListener listener) {
+	    // ((TableModel)event.getSource())
+		// .removeTableModelListener((TableModelListener)listener);
+	// }
+    // }
+// }

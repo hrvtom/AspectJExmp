@@ -7,38 +7,38 @@ public aspect ListDataListenerWeakening extends EventListenerWeakening {
 	: target(AbstractListModel) && args(ListDataListener);
 
     public EventListener getWeakListener(EventListener listener) {
-	System.out.println("Weakening " + listener);
-	return new WeakListDataListener((ListDataListener)listener);
+		System.out.println(">ListDataListenerWeakening: Weakening listener " + listener);
+		return new WeakListDataListener((ListDataListener)listener);
     }
 }
 
-public class WeakListDataListener extends WeakEventListener 
-    implements ListDataListener {
+// public class WeakListDataListener extends WeakEventListener 
+    // implements ListDataListener {
 
-    public WeakListDataListener(ListDataListener delegatee) {
-	super(delegatee);
-    }
+    // public WeakListDataListener(ListDataListener delegatee) {
+	// super(delegatee);
+    // }
     
-    public void contentsChanged(ListDataEvent e) {
-	((ListDataListener)getDelegatee()).contentsChanged(e);
-    }
+    // public void contentsChanged(ListDataEvent e) {
+	// ((ListDataListener)getDelegatee()).contentsChanged(e);
+    // }
 
-    public void intervalAdded(ListDataEvent e) {
-	((ListDataListener)getDelegatee()).intervalAdded(e);
-    }
+    // public void intervalAdded(ListDataEvent e) {
+	// ((ListDataListener)getDelegatee()).intervalAdded(e);
+    // }
 
-    public void intervalRemoved(ListDataEvent e) {
-	((ListDataListener)getDelegatee()).intervalRemoved(e);
-    }
+    // public void intervalRemoved(ListDataEvent e) {
+	// ((ListDataListener)getDelegatee()).intervalRemoved(e);
+    // }
 
-    static aspect ListRemoveGarbageCollectedListeners 
-	extends WeakEventListener.RemoveGarbageCollectedListeners {
+    // static aspect ListRemoveGarbageCollectedListeners 
+	// extends WeakEventListener.RemoveGarbageCollectedListeners {
 
-	pointcut lexicalScopeMatch() : within(WeakListDataListener);
+	// pointcut lexicalScopeMatch() : within(WeakListDataListener);
 
-	public void removeListener(EventObject event, EventListener listener) {
-	    ((ListModel)event.getSource())
-		.removeListDataListener((ListDataListener)listener);
-	}
-    }
-}
+	// public void removeListener(EventObject event, EventListener listener) {
+	    // ((ListModel)event.getSource())
+		// .removeListDataListener((ListDataListener)listener);
+	// }
+    // }
+// }

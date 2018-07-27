@@ -11,11 +11,12 @@ public abstract aspect EventListenerUniqueness
 	: addListenerCall(model, listener) {
 
 	EventListener[] listeners = getCurrentListeners(model);
+	System.out.println(">>>EventListenerUniqueness: get current listeners");
 	if (!Utils.isInArray(listeners, listener)) {
-	    System.out.println("Accepting " + listener);
+	    System.out.println(">>>EventListenerUniqueness: Adding Listener, accepting new " + listener);
 	    proceed(model, listener);
 	} else {
-	    System.out.println("Already listening " + listener);
+	    System.out.println(">>>EventListenerUniqueness: Adding listener, listener already listening " + listener);
 	}
     }
 

@@ -13,3 +13,6 @@ softening - primjer softeninga, odnosno softening(promjena) checked exception-a 
 swing-thread - primjer aspect-a na GUI sucelju
 
 thread-pooling - primjer kako s aspectom napraviti thread pooling
+
+policy-enforcement - primjer apstraktnih aspekata, definiranje vise aspekata oko istog pointcuta
+                     definiranje apstraktnog aspecta kao inner klase

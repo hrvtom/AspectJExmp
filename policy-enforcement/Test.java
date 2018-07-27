@@ -9,6 +9,7 @@ public class Test {
     public static void main(String[] args) throws Exception {
 		setupListeners();
 		for (int i = 0; i < 10; ++i) {
+			System.out.println("Iteration: " + i);
 			tableModel.fireTableDataChanged();
 			System.gc();
 			Thread.sleep(1000);
@@ -18,7 +19,7 @@ public class Test {
     public static void setupListeners() {
 		TableModelListener testTableListener = new TableModelListener() {
 				public void tableChanged(TableModelEvent e) {
-					System.out.println("tableChanged" + this);
+					System.out.println(">TableModelListener: tableChanged executed " + this);
 				}
 			};
 
@@ -28,13 +29,13 @@ public class Test {
 
 		ListDataListener testListListener = new ListDataListener() {
 			public void contentsChanged(ListDataEvent e) {
-				System.out.println("contentsChanged" + this);
+				System.out.println(">ListDataListener: contentsChanged executed" + this);
 			}
 			public void intervalAdded(ListDataEvent e) {
-				System.out.println("intervalAdded" + this);
+				System.out.println(">ListDataListener: intervalAdded executed"  + this);
 			}
 			public void intervalRemoved(ListDataEvent e) {
-				System.out.println("intervalRemoved" + this);
+				System.out.println(">ListDataListener: intervalRemoved executed" + this);
 			}
 			};
 

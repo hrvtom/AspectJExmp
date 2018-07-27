@@ -91,6 +91,8 @@ An aspect can mark itself and any pointcut as abstract. Abstract pointcuts act s
 they let you defer the details to the derived aspects. A concrete aspct axtending an abstract aspect can then provide 
 concrete definitions of abstract pointcuts
 
+You can define aspect as inner class (or inner aspect) of the class, But aspec must be declared as 'static'
+
 >>>>>
 AspectJ lets you introduce methods or fields to classes and interfaces.
 Interestingly, AspectJ lets you introduce method implementations and fields into interfaces.
@@ -127,3 +129,9 @@ Other AspectJ features:
         - You can mark an aspect privileged, which gives it access to the private members of aspected classes.
 
 
+>>>>
+One best practice in AspectJ is to declare a special aspect whose task consists simply of declaring precedence for other aspects.
+Actually it doesn't work with abstract aspects
+public aspect MyAspectOrdering{
+	declare precedence: EventListenerWeakening,EventListenerUniqueness;
+}
