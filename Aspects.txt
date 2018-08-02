@@ -1,11 +1,11 @@
 https://www.javaworld.com/article/2073918/core-java/i-want-my-aop---part-1.html
 
-Since most systems incluse crosscutting concerns, it's no suprise that a few
+Since most systems include crosscutting concerns, it's no supprise that a few
 techniques have emerged to modularize their implementation. Such techniques 
 include mix-in classes, design patterns, and domain-specific solutions.
 
 With mix-in classes you can differ a concerns final implementation. 
-The primary class contains a mix-in class instance and allowes the systems 
+The primary class contains a mix-in class instance and allows the systems 
 other parts to set the instance.
 In credit card example, the class implementing business logic composes a logger.
 Another part of the system could set this logger to get the appropriate
@@ -14,32 +14,32 @@ middleware. Although the nature of logging is now deffered, the composer
 nevertheless contains the code to invoke logging operations at all log
 points and controls the logging information.
 
-Behavioral design patterns, like Visitior and Template Method, let you defer
+Behavioral design patterns, like Visitor and Template Method, let you defer
 implementation. However, just in case with mix-ins, the control of the 
 operation -- invoking visiting logic or invoking template methods -- stays 
 within the main classes.
 
 Domain specific solutions, such as frameworks and application servers, let
 developers address some crosscutting concerns in a modularized way. The
-EJB architecute addresses crossuctting concernes such as security, administration
+EJB architecute addresses crossuctting concerns such as security, administration
 performance, and container-managed persistence. Bean developers focus on the business
-logic, while the deployment developers focus on depleyment issues,such as gean-data
+logic, while the deployment developers focus on deployment issues,such as bean-data
 mapping to a database.
 
-AOP lets you implement individual concerns in a loosly coupled fashion,
+AOP lets you implement individual concerns in a locally coupled fashion,
 and combine these implementations to form the final system.
 AOP differs most from OOP in the way it addresses crosscutting concerns. With
 AOP, each concern's implementation remains unaware that other concerns are
 "aspecting" it. Example, credit card processign module doesn't know that the other
 concerns are logging or authenticating its operations.
 
-At high level, an AOP language specifies two componenets:
+At high level, an AOP language specifies two components:
         - Implementation of concerns, mapping of individual requirement into code
           so that compiler can translate it into executable code.
         - Weaving rules specification, how to compose independently implemented concerns
           to form the final system.
 
-In addtion, AspectJ also allows the aspecting of other aspects and classes in several ways.
+In addition, AspectJ also allows the aspecting of other aspects and classes in several ways.
 The each concern's implementation is oblivious to the fact that it is being aspected by other
 concerns.
 You can introduce new data members and new methods, as well as declare a class to implement
@@ -49,8 +49,8 @@ Join points - define specific points in a program's execution. Joinpoints could 
 specific methods in a class. Candidate joinpoints include calls to a method, a conditional check,
 a loop's beginning, or an assignment. Joinpoints also have a context associated with them.
 A method-call joinpoint could have the target object and its argument as part of the context.
-Pontcut - is the language construct that specifies Join point or specify joinpoint collection.
-It collects specific context atthose points, it let you expose context at the joinpoint to an
+Pointcut - is the language construct that specifies Joinpoint or specify joinpoint collection.
+It collects specific context at those points, it let you expose context at the joinpoint to an
 advice implementation.
 Advice - defines pieces of an aspect implementation to be executed at pointcuts.
 Aspect - combines these primitives.
@@ -82,16 +82,16 @@ a different argument set.
 >>>>>
 Aspect puts together pointcuts and advices.
 Aspects resemble clasess: an aspect can contain methods and fields, extend other classes or aspects and implement
-interfaces. Aspects differ from classes in that you cannot create an objext from an aspect using new().
+interfaces. Aspects differ from classes in that you cannot create an object from an aspect using new().
 
 AspectJ allows classes to declare pointcuts. You must declare "static" pointcuts declared inside a class.
 However, AspectJ doesn't allow classes to contain advices; only aspects can contain advices.
 
-An aspect can mark itself and any pointcut as abstract. Abstract pointcuts act similary to a class's abstract methods,
-they let you defer the details to the derived aspects. A concrete aspct axtending an abstract aspect can then provide 
+An aspect can mark itself and any pointcut as abstract. Abstract pointcuts act similarly to a class's abstract methods,
+they let you defer the details to the derived aspects. A concrete aspect extending an abstract aspect can then provide 
 concrete definitions of abstract pointcuts
 
-You can define aspect as inner class (or inner aspect) of the class, But aspec must be declared as 'static'
+You can define aspect as inner class (or inner aspect) of the class, But aspect must be declared as 'static'
 
 >>>>>
 AspectJ lets you introduce methods or fields to classes and interfaces.
@@ -122,7 +122,7 @@ aspect SoftenDateFetcherRemoteException {
 Other AspectJ features:
         - You can declare one aspect as dominant over others to control precedence when multiple aspects
           affect a certain pointcut.
-        - By default, Aspect J associates aspects with other classes and aspects, and therefore all aspectee
+        - By default, AspectJ associates aspects with other classes and aspects, and therefore all aspectee
           instances share the aspect's state. Beyond the default association type, AspectJ offers additional
           types: perthis, pertarget, percflow, and percflowbelow. Each associates a separate aspect instance
           with a self object, target object, control flow, and control flow excluding the pointcut, respectively.
@@ -135,3 +135,35 @@ Actually it doesn't work with abstract aspects
 public aspect MyAspectOrdering{
 	declare precedence: EventListenerWeakening,EventListenerUniqueness;
 }
+
+>>>>
+Usage
+Logging and debugging
+Using AspectJ for logging and debugging also lets you log different contextual information without touching the main code.
+
+Design by contract (DBC)
+DB>C> requires explicit contracts that must hold true at various execution points, such as before and after each operation.
+You can use AspectJ to enforce DBC by creating aspects containing advices to check contracts at required execution points.
+If you wish to not enforce contracts in a production environment, simply exclude DBC aspects from your production build.
+
+Lazy creation/initialization
+It's common to optimize memory-intensive objects by lazily creating them. As with other optimizations, you'd use lazy instantiation
+because of profiling. However, it's invasive to change your implementation everywhere to lazily create certain fields. At the most, 
+OOP only can require programmers to always use a "get>Field>()" method and modularize logic for "create-if-needed" in that
+method. With that approach, if a programmer forgets to use this method and does a direct access, a crash awaits. Marking such 
+fields with private access does not help for in-class field access.Even if you discover the need earlier during the design phase
+and the problem mentioned above is unimportant, it is nice to separate optimization concerns to avoid overloading the main 
+implementation logic.
+AspectJ's "get()" pointcut lets you capture access to a field. You can advise such a pointcut to create an object if the field was null.
+With this,  the logic if checking for null and creating an object if needed is modularized.
+
+Caching
+High performance applications need to cache expensive-to-create objects. For example, a server serving images, say stock charts,
+may need to cache byte-stream image representations. With AspectJ, you capture image creation joinpoints, looking into the cache for an
+available image for some given data, then using the cached image instead. If no such image is available, the advice to such joinpoints 
+creates an image and stores it in a hash table. The caching implementation could also employ a soft reference or some other scheme to 
+ensure cached images do not cause the application to starve for memory. y using AspectJ, you can make noninvasive changes if the caching
+logic needs to change.
+
+
+

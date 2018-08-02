@@ -16,3 +16,6 @@ thread-pooling - primjer kako s aspectom napraviti thread pooling
 
 policy-enforcement - primjer apstraktnih aspekata, definiranje vise aspekata oko istog pointcuta
                      definiranje apstraktnog aspecta kao inner klase
+					 
+access-control - primjer kako modificirati access metodama/konsturctorima kada java access
+					(private,protected,package,public) nije dovoljan
