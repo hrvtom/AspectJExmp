@@ -1,5 +1,10 @@
 https://www.javaworld.com/article/2073918/core-java/i-want-my-aop---part-1.html
 
+Concerns like security cut across the natural units of modularity. For object-oriented programming languages, the natural unit of modularity
+is the class. But in object-oriented programmming languages, crosscutting concerns are not easily turned into classes precisely because they
+cur across classes, and so these aren't reusable, they can't be refined or inherited, they are spread through out the program in an undisciplined 
+way, in short, they are difficult to work with.
+
 Since most systems include crosscutting concerns, it's no supprise that a few
 techniques have emerged to modularize their implementation. Such techniques 
 include mix-in classes, design patterns, and domain-specific solutions.
@@ -55,6 +60,10 @@ advice implementation.
 Advice - defines pieces of an aspect implementation to be executed at pointcuts.
 Aspect - combines these primitives.
 
+A join point is some point in the execution of a program together with a view into the execution context when that point occurs.
+Join points are picked out by pointcuts. When a program reaches a join point, advice on that join point may run,
+in addition to (or instead of) the join point itself. 
+
 >>>>>
 Named pointcuts explicitly specify their names.You can reuse such pointcuts for defining other pointcuts,
 defining part of an advice, overriding a pointcut ...
@@ -66,10 +75,30 @@ Advice implementations often require access to data at the joinpoint. For exampl
 an advice might need information, called context, about a method and arguments to it.
 Pointcuts, therefore, allow exposure of the context at the execution point to pass to an advice implementation.
 AspectJ offers target(), this(), and args() pointcuts to collect the context.
+Pointcut not only pick out join points, they can also expose part of the execution context at their join points.
+Values exposed by a pointcut can be used in the body of advice declarations.
 
 >>>>>
 AspectJ supports a limited form of reflection.Each advice body has access to sa special object, thisJoinPoint,
 which contains the information about the joinpoint.
+
+The type of thisJoinPoint includes a rich reflective class hierarchy of signatures, and can be used to access both static and dynamic information
+about join points such as the arguments of the join point: 
+thisJoinPoint.getArgs()
+
+In addition, it holds an object consisting of all the static information about the join point such as corresponding line number and static signature:
+thisJoinPoint.getStaticPart()
+
+If you only need the static information about the join point, you may access the static part of the join point directly with the special variable
+thisJoinPointStaticPart. Using thisJoinPointStaticPart will avoid the run-time creation of the join point object that may be necessary
+when using thisJoinPoint directly. 
+
+It is always the case that 
+thisJoinPointStaticPart == thisJoinPoint.getStaticPart()
+thisJoinPoint.getKind() == thisJoinPointStaticPart.getKind()
+thisJoinPoint.getSignature() == thisJoinPointStaticPart.getSignature()
+thisJoinPoint.getSourceLocation() == thisJoinPointStaticPart.getSourceLocation()
+
 
 >>>>>
 Advices specify the executable code when reaching certain pointcuts. AspectJ provides three ways to associate an advice with a joinpoint:
@@ -92,6 +121,20 @@ they let you defer the details to the derived aspects. A concrete aspect extendi
 concrete definitions of abstract pointcuts
 
 You can define aspect as inner class (or inner aspect) of the class, But aspect must be declared as 'static'
+
+>>>>>
+Like classes, aspects may be instantiated, but aspectJ controls how that instantiation happens - so you can't use Java's "new" form
+to build new aspect instances. By default, each aspect is a singleton, so one aspect instance is created. This means that advice may
+use non-static fields of the aspect. if it meeds to keep state around:
+
+aspect Logging {
+    OutputStream logStream = System.err;
+
+    before(): move() {
+        logStream.println("about to move");
+    }
+}
+
 
 >>>>>
 AspectJ lets you introduce methods or fields to classes and interfaces.
@@ -128,13 +171,48 @@ Other AspectJ features:
           with a self object, target object, control flow, and control flow excluding the pointcut, respectively.
         - You can mark an aspect privileged, which gives it access to the private members of aspected classes.
 
-
+>>>>
+call vs execute
+Firstly, the lexical pointcut declarations within and withincode match differently. At a call join point,
+the enclosing code is that of the call site. This means that call(void m()) && withincode(void m()) will only capture
+directly recursive calls, for example. At an execution join point, however, the program is already executing the method,
+so the enclosing code is the method itself: execution(void m()) && withincode(void m()) is the same as execution(void m()). 
+Secondly, the call join point does not capture super calls to non-static methods. This is because such super calls are different in Java,
+since they don't behave via dynamic dispatch like other calls to non-static methods.
+ 
 >>>>
 One best practice in AspectJ is to declare a special aspect whose task consists simply of declaring precedence for other aspects.
 Actually it doesn't work with abstract aspects
 public aspect MyAspectOrdering{
 	declare precedence: EventListenerWeakening,EventListenerUniqueness;
 }
+
+>>>>
+AspectJ can only work with what it is told, and for optimal performance of matching the user should think about what they are trying
+to achieve and narrow the search space for matches as much as they can in the definition. Basically there are three kinds of pointcut
+designator: kinded, scoping and context: 
+
+• Kinded designators are those which select a particular kind of join point. For example: execution, get, set, call, handler 
+• Scoping designators are those which select a group of join points of interest (of probably many kinds). For example: within, withincode 
+• Contextual designators are those that match (and optionally bind) based on context. For example: this, target, @annotation 
+
+A well written pointcut should try and include at least the first two types (kinded and scoping), whilst the contextual designators may be
+included if wishing to match based on join point context, or bind that context for use in the advice. Supplying either just a kinded designator
+or just a contextual designator will work but could affect weaving performance (time and memory used) due to all the extra processing and analysis.
+Scoping designators are very fast to match, they can very quickly dismiss groups of join points that should not be further processed - that is
+why a good pointcut should always include one if possible. 
+
+>>>>
+pointcut goCut(): cflow(this(Demo) && execution(void go()));
+
+Object around(): demoExecs() && !execution(* go()) && goCut() {
+
+}
+
+The pointcut goCut is defined as 
+cflow(this(Demo)) && execution(void go())
+so that only executions made in the control flow of Demo.go are intercepted. The control flow from the method go includes the execution of go itself,
+so the definition of the around advice includes !execution(* go()) to exclude it from the set of executions advised. 
 
 >>>>
 Usage

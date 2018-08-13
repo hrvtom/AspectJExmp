@@ -19,3 +19,7 @@ policy-enforcement - primjer apstraktnih aspekata, definiranje vise aspekata oko
 					 
 access-control - primjer kako modificirati access metodama/konsturctorima kada java access
 					(private,protected,package,public) nije dovoljan
+
+tjp - primjer koristenja thisjoinpoint variable, dohvacanje svega i svacega
+
+inheritance - 

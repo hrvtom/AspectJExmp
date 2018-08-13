@@ -21,6 +21,12 @@ Compiling and running examples
    of your interest and issue following command:
 
    ajc *.java
+   or
+   ajc package/*.java
+   or 
+   ajc -argfile name.lst
+   or 
+   ajc -argfile package/name.list
 
    Note, compiling example in "compiletime-crosscutting" directory will
    result in compile time errors. This is correct behavior illustrating
