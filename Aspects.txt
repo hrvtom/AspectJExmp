@@ -243,5 +243,83 @@ creates an image and stores it in a hash table. The caching implementation could
 ensure cached images do not cause the application to starve for memory. y using AspectJ, you can make noninvasive changes if the caching
 logic needs to change.
 
+>>>>>
+Maven + Eclipse
+
+<!-- Spring AOP + AspectJ -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>1.8.1</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>4.0.4.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.8.1</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjtools</artifactId>
+    <version>${aspectj.version}</version>
+</dependency>
+
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.7</version><!-- AspectJ weaver plugin 7 is for java 8 (version 1.6 is for java 7) -->
+        <configuration>
+            <complianceLevel>1.8</complianceLevel>
+            <source>1.8</source>
+            <target>1.8</target>
+        </configuration>				
+        <executions>
+            <execution>
+                <goals>
+                    <goal>compile</goal>      
+                    <goal>test-compile</goal>  
+                </goals>
+            </execution>
+        </executions>
+    </plugin> 
+</plugins>
 
 
+        <pluginManagement>
+            <plugins>
+<!--This plugin's configuration is used to store Eclipse m2e settings
+only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>aspectj-maven-plugin</artifactId>
+                                        <versionRange>1.7</versionRange>
+                                        <goals>
+                                            <goal>compile</goal>
+                                            <goal>test-compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+<<<<<
