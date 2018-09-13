@@ -1,4 +1,5 @@
 https://www.javaworld.com/article/2073918/core-java/i-want-my-aop---part-1.html
+https://doanduyhai.wordpress.com/2011/12/05/advanced-aspectj-part-i-instanciation-model/
 
 Concerns like security cut across the natural units of modularity. For object-oriented programming languages, the natural unit of modularity
 is the class. But in object-oriented programmming languages, crosscutting concerns are not easily turned into classes precisely because they
@@ -245,6 +246,9 @@ logic needs to change.
 
 >>>>>
 Maven + Eclipse
+https://github.com/Barlog-M/aspectj-maven-example/blob/compile-time-weaving/pom.xml
+https://stackoverflow.com/questions/30413186/nosuchmethoderror-with-aspectj
+
 
 <!-- Spring AOP + AspectJ -->
 <dependency>

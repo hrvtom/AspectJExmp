@@ -70,3 +70,12 @@ Compiling and running examples
    To test pooling aspect, kill a client (by typing ^C), start a new 
    one, and observe messages printed in command shell running the server.
    
+4 MVN example
+
+  Run
+  mvn compile exec:java
+  
+  Create executable jar with dependencies
+  mvn package assembly:single
+
+

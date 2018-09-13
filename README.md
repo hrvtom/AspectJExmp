@@ -22,4 +22,4 @@ access-control - primjer kako modificirati access metodama/konsturctorima kada j
 
 tjp - primjer koristenja thisjoinpoint variable, dohvacanje svega i svacega
 
-inheritance - 
+mvnaspect - aspects maven project, 
