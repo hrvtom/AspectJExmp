@@ -1,4 +1,7 @@
 https://www.javaworld.com/article/2073918/core-java/i-want-my-aop---part-1.html
+https://doanduyhai.wordpress.com/2011/12/05/advanced-aspectj-part-i-instanciation-model/
+https://github.com/Barlog-M/aspectj-maven-example/blob/compile-time-weaving/pom.xml
+https://stackoverflow.com/questions/30413186/nosuchmethoderror-with-aspectj
 
 
 Installing AspectJ
@@ -70,12 +73,18 @@ Compiling and running examples
    To test pooling aspect, kill a client (by typing ^C), start a new 
    one, and observe messages printed in command shell running the server.
    
-4 MVN example
+4 MVN + Eclipse example
 
   Run
   mvn compile exec:java
   
   Create executable jar with dependencies
   mvn package assembly:single
+  
+  ***Branches
+	master - non AspectJ example
+	compile_time_weaving - weaving during compile time example
+	load_time_weaving -waving during load time example
+  
 
 
