@@ -76,7 +76,7 @@ Compiling and running examples
 4 MVN + Eclipse example
 
   Run
-  mvn compile exec:java
+  mvn compile exec:exec
   
   Create executable jar with dependencies
   mvn package assembly:single

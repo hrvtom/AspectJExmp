@@ -23,6 +23,13 @@
 		<version>${aspectj.version}</version> 
 	</dependency> 
 
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>${aspectj.version}</version> 
+		<scope>provided</scope>
+	</dependency>
+	
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -33,33 +40,35 @@
   
 	<build> 
 		<plugins> 
-  			<plugin> 
-  				<groupId>org.codehaus.mojo</groupId> 
-  				<artifactId>aspectj-maven-plugin</artifactId> 
-  				<version>1.7</version> 
-  				<configuration> 
-  					<complianceLevel>${java.version}</complianceLevel> 
-  					<source>${maven.compiler.source}</source> 
-  					<target>${maven.compiler.target}</target> 
-  					<showWeaveInfo>true</showWeaveInfo> 
-  				</configuration> 
-  				<executions> 
-  					<execution> 
-  						<goals> 
-  							<goal>compile</goal> 
-  							<goal>test-compile</goal> 
-  						</goals> 
-  					</execution> 
-  				</executions> 
-  				<dependencies> 
-  					<dependency> 
-  						<groupId>org.aspectj</groupId> 
-  						<artifactId>aspectjtools</artifactId> 
-  						<version>${aspectj.version}</version> 
-  					</dependency> 
-  				</dependencies> 
-  			</plugin> 
- 
+  			<plugin>
+  				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>getClasspathFilenames</id>
+						<goals>
+							<goal>properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+  			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-classpath</argument>
+						<classpath/>
+						<argument>-javaagent:${org.aspectj:aspectjweaver:jar}</argument>
+<!-- 						<argument>-javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectjweaver.version}/aspectjweaver-${aspectjweaver.version}.jar</argument> -->
+<!-- 						<argument>-javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</argument> -->
+						<argument>com.mycompany.app.Test</argument>
+					</arguments>
+				</configuration>
+			</plugin>
   			<plugin> 
   				<groupId>org.apache.maven.plugins</groupId> 
   				<artifactId>maven-compiler-plugin</artifactId> 
@@ -70,8 +79,6 @@
   					<target>${java.version}</target> 
   				</configuration> 
   			</plugin> 
-  
- 
   			<plugin> 
   				<groupId>org.apache.maven.plugins</groupId> 
   				<artifactId>maven-assembly-plugin</artifactId> 
@@ -87,48 +94,12 @@
   					</descriptorRefs> 
   				</configuration> 
   			</plugin> 
-  
- 
-  			<plugin> 
-  				<groupId>org.codehaus.mojo</groupId> 
-  				<artifactId>exec-maven-plugin</artifactId> 
-  				<version>1.3.2</version> 
-  				<configuration> 
-  					<mainClass>com.mycompany.app.Test</mainClass> 
-  					<killAfter>-1</killAfter> 
-  				</configuration> 
-  			</plugin> 
-  		</plugins> 
+   		</plugins> 
   		
 		<pluginManagement>
             <plugins>
 			<!--This plugin's configuration is used to store Eclipse m2e settings
 				only. It has no influence on the Maven build itself. -->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.codehaus.mojo</groupId>
-                                        <artifactId>aspectj-maven-plugin</artifactId>
-                                        <versionRange>1.7</versionRange>
-                                        <goals>
-                                            <goal>compile</goal>
-                                            <goal>test-compile</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute />
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
   	</build> 

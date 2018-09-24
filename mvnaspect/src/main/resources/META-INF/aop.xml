@@ -1,0 +1,16 @@
+<!DOCTYPE aspectj PUBLIC
+        "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+    <weaver options="-verbose -showWeaveInfo -debug">
+<!--         only weave classes in our application-specific packages -->
+        <include within="com.mycompany.app.*"/>
+<!--          if Aspect is in other package include that package too -->
+<!--         <include within="foo.*"/> -->
+    </weaver>
+    
+    <aspects>
+        <!-- weave in just this aspect -->
+<!--         <aspect name="com.mycompany.app.MannersAspect"/> -->
+        <aspect name="com.mycompany.app.JapaneseMannersAspect"/>
+    </aspects>
+</aspectj>
